@@ -44,14 +44,14 @@ class Router(meterRegistry: MeterRegistry) : RouteBuilder() {
     override fun configure() {
         from(DIRECT_ROUTE)
             .process { exchange ->
-                val originalKeywords : String = exchange.getIn().getHeader("keywords") as? String ?: ""
+                val originalKeywords: String = exchange.getIn().getHeader("keywords") as? String ?: ""
                 val (maxList, keywordList) = originalKeywords.split(" ")
                     .partition { it.startsWith("max:") }
                 val max = maxList.firstOrNull()
-                        ?.drop(4)
-                        ?.toIntOrNull()
-                        ?: 5
-                exchange.getIn().setHeader("keywords", keywordList.joinToString ( " " ))
+                    ?.drop(4)
+                    ?.toIntOrNull()
+                    ?: 5
+                exchange.getIn().setHeader("keywords", keywordList.joinToString (" "))
                 exchange.getIn().setHeader("count", max)
             }
             .toD("twitter-search:\${header.keywords}?count=\${header.count}")
@@ -71,8 +71,7 @@ class Router(meterRegistry: MeterRegistry) : RouteBuilder() {
     }
 }
 
-class TaggedCounter(private val name: String, private val tagName: String,
-                    private val registry: MeterRegistry) {
+class TaggedCounter(private val name: String, private val tagName: String, private val registry: MeterRegistry) {
     private val counters: MutableMap<String, Counter> = HashMap()
     fun increment(tagValue: String) {
         counters.getOrPut(tagValue) {
