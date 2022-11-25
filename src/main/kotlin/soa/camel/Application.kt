@@ -51,7 +51,7 @@ class Router(meterRegistry: MeterRegistry) : RouteBuilder() {
                     ?.drop(4)
                     ?.toIntOrNull()
                     ?: 5
-                exchange.getIn().setHeader("keywords", keywordList.joinToString (" "))
+                exchange.getIn().setHeader("keywords", keywordList.joinToString(" "))
                 exchange.getIn().setHeader("count", max)
             }
             .toD("twitter-search:\${header.keywords}?count=\${header.count}")
