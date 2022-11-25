@@ -24,6 +24,8 @@ const val DIRECT_ROUTE = "direct:twitter"
 const val COUNT_ROUTE = "direct:extractor"
 const val LOG_ROUTE = "direct:log"
 const val INDEX_VIEW = "index"
+const val PAR_SIZE = 4
+const val DEF_SIZE = 5
 
 @Controller
 class SearchController(private val producerTemplate: ProducerTemplate) {
@@ -48,9 +50,9 @@ class Router(meterRegistry: MeterRegistry) : RouteBuilder() {
                 val (maxList, keywordList) = originalKeywords.split(" ")
                     .partition { it.startsWith("max:") }
                 val max = maxList.firstOrNull()
-                    ?.drop(4)
+                    ?.drop(PAR_SIZE)
                     ?.toIntOrNull()
-                    ?: 5
+                    ?: DEF_SIZE
                 exchange.getIn().setHeader("keywords", keywordList.joinToString(" "))
                 exchange.getIn().setHeader("count", max)
             }
